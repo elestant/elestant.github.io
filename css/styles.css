@@ -241,11 +241,11 @@ a {
   text-decoration: underline;
 }
 a:hover {
-  color: #ebedf3;
+  color: #7c2954;
 }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
-  color: inherit;
+  color: #d48a6e;
   text-decoration: none;
 }
 
@@ -2414,7 +2414,7 @@ textarea.form-control-lg {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
+  color: #54585b;
   background-color: #fff;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
@@ -2476,22 +2476,6 @@ textarea.form-control-lg {
   margin-left: -1.5em;
 }
 
-.form-check-input {
-  width: 1em;
-  height: 1em;
-  margin-top: 0.25em;
-  vertical-align: top;
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  -webkit-print-color-adjust: exact;
-          color-adjust: exact;
-}
 .form-check-input[type=checkbox] {
   border-radius: 0.25em;
 }
@@ -11384,7 +11368,7 @@ p.lead {
     display: block;
   }
 }
-.social-icons .social-icon {
+.social-icons .social-icon { /* SOCIAL BUTTONE */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -11400,7 +11384,7 @@ p.lead {
   margin-right: 0;
 }
 .social-icons .social-icon:hover {
-  background-color: #bd5d38;
+  background-color: #7c2954;
 }
 
 .dev-icons {
