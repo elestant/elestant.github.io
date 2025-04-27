@@ -61,7 +61,7 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #ebeff4;
-  --bs-body-bg: rgb(21, 34, 37); /* COMMENT: back ground color*/
+  --bs-body-bg: rgb(255, 255, 255); /* COMMENT: back ground color*/
 }
 
 *,
