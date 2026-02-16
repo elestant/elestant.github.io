@@ -1,308 +1,549 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Eva Lestant Personal Experiences" />
-    <meta name="author" content="Eva Lestant" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eva Lestant - Personal Experiences</title>
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon_el.ico" />
-    <!-- Font Awesome icons -->
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" />
-    <!-- Core theme CSS -->
-    <link href="css/styles.css" rel="stylesheet" />
     <style>
-    a.hlinknames {color:#868e96;}
-    a.hlinknames:hover, a.hlinknames:active {text-decoration: underline; color:#868e96;}
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --text-secondary: #111111;
+            --accent-blue: #2779a7;
+            --accent-red: #d14545;
+            --accent-red-light: #f5e8e8;
+            --border: #e5e5e5;
+            --card-bg: #fff;
+            --abstract-bg: #f5f8fa;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0a0a;
+            --text: #fafafa;
+            --text-secondary: #a3a3a3;
+            --accent-blue: #5cb8e0;
+            --accent-red: #e86060;
+            --accent-red-light: #2a1f1f;
+            --border: #262626;
+            --card-bg: #171717;
+            --abstract-bg: #151a1d;
+        }
+
+        body {
+            font-family: -apple-system, system-ui, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { border-color: var(--accent-blue); }
+        .theme-toggle svg { width: 18px; height: 18px; stroke: var(--text); fill: none; stroke-width: 1.5; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 60px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 80px;
+        }
+
+        .sidebar { position: sticky; top: 50px; text-align: center; align-self: start; }
+
+        .name { font-family: -apple-system, system-ui, 'Helvetica Neue', Arial, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; color: var(--accent-blue); white-space: nowrap; }
+
+        .profile-img {
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            filter: grayscale(15%);
+            transition: filter 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-img:hover { filter: grayscale(0%); }
+
+        .title, .affiliation { color: var(--text-secondary); font-size: 15px; margin-bottom: 4px; font-weight: 400; }
+        .affiliation { margin-bottom: 18px; }
+
+        .cv-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .cv-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--text);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .cv-btn:hover { color: var(--bg); }
+        .cv-btn:hover::before { left: 0; }
+
+        .contact a {
+            display: inline-block;
+            color: var(--accent-red);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .contact a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .contact a:hover::after { width: 100%; }
+
+        .address { color: var(--text-secondary); font-size: 13px; line-height: 1.6; margin-top: 10px; }
+
+        .social { display: flex; gap: 14px; margin-top: 16px; justify-content: center; }
+        .social a { color: var(--text-secondary); transition: color 0.2s; display: flex; align-items: center; }
+        .social a:hover { color: var(--accent-blue); }
+        .social svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.2s;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .sidebar-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-nav a:hover { color: var(--accent-blue); }
+        .sidebar-nav a:hover::after { width: 100%; }
+
+        /* Main content */
+        .main h2 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-blue);
+            margin-bottom: 24px;
+            margin-top: 45px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            scroll-margin-top: 30px;
+        }
+
+        .main h2:first-of-type { margin-top: 0; }
+
+        .main h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+
+        .main h3:first-child { margin-top: 0; }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            font-style: italic;
+        }
+
+        .prose {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .prose strong { color: var(--text); font-weight: 500; }
+
+        .prose a {
+            color: var(--accent-red);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .prose a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .prose a:hover::after { width: 100%; }
+
+        /* Image grids */
+        .image-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .image-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .image-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(15%);
+            transition: filter 0.3s, transform 0.3s;
+        }
+
+        .image-card:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.03);
+        }
+
+        .image-card .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 14px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .image-card:hover .caption { opacity: 1; }
+
+        /* Testimony */
+        .testimony {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 28px;
+            align-items: start;
+            margin: 28px 0;
+            padding: 24px;
+            background: var(--abstract-bg);
+            border-left: 2px solid var(--accent-blue);
+        }
+
+        .testimony img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .testimony-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .testimony-text p { margin-bottom: 12px; }
+        .testimony-text p:last-child { margin-bottom: 0; }
+        .testimony-text strong { color: var(--text); font-weight: 500; }
+
+        /* Link buttons */
+        .link-btn {
+            display: inline-block;
+            padding: 10px 18px;
+            background: var(--accent-red-light);
+            border: none;
+            color: var(--accent-red);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-right: 12px;
+            margin-bottom: 12px;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-red);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .link-btn:hover { color: white; }
+        .link-btn:hover::before { left: 0; }
+
+        .back-link {
+            display: inline-block;
+            color: var(--accent-red);
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 24px;
+            position: relative;
+        }
+
+        .back-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .back-link:hover::after { width: 100%; }
+
+        .closing-image {
+            display: block;
+            max-width: 50%;
+            margin: 32px auto 0;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; padding: 40px 24px; gap: 50px; }
+            .sidebar { position: static; }
+            .profile-img { margin: 0 auto 24px; width: 200px; height: 200px; }
+            .social { justify-content: center; }
+            .theme-toggle { top: 16px; right: 16px; }
+            .image-grid-2 { grid-template-columns: 1fr; }
+            .image-grid-3 { grid-template-columns: 1fr; }
+            .testimony { grid-template-columns: 1fr; }
+            .testimony img { max-width: 200px; margin: 0 auto; }
+            .closing-image { max-width: 80%; }
+        }
     </style>
 </head>
-<body id="page-top">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-        <a class="navbar-brand js-scroll-trigger" href="index.html#page-top">
-            <span class="d-block d-lg-none">Eva Lestant</span>
-            <span class="d-none d-lg-block">
-                <img class="img-profile rounded-circle mx-auto mb-2" src="assets/img/Stanford_bio.jpg" alt="..." style="width: 15rem; height: 15rem; object-fit: cover;" />
-            </span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html#Publications">Publications</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html#WorkingPaper">Working Papers</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html#WorkinProgress">Work in Progress</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html#Personal">Personal</a></li>
-            </ul>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <svg viewBox="0 0 24 24" class="moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg viewBox="0 0 24 24" class="sun" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="name">Eva Lestant</div>
+            <img src="assets/img/Stanford_bio.jpg" alt="Eva Lestant" class="profile-img">
+            <div class="title">PhD Student in Economics</div>
+            <div class="affiliation">Stanford University</div>
+            <a href="assets/pdf/CV_research.pdf" class="cv-btn" target="_blank">DOWNLOAD CV</a>
+            <div class="contact">
+                <a href="mailto:elestant@stanford.edu">elestant@stanford.edu</a>
+            </div>
+            <div class="address">579 Jane Stanford Way<br>Stanford, CA 94305<br>(650) 709-6756</div>
+            <div class="social">
+                <a href="https://github.com/elestant/elestant.github.io" title="GitHub" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+                <a href="https://scholar.google.com/citations?hl=en&authuser=1&user=Hr4T94UAAAAJ" title="Google Scholar" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg></a>
+                <a href="https://www.linkedin.com/in/eva-l-40b4018a" title="LinkedIn" target="_blank"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                <a href="https://twitter.com/heva_tant" title="Twitter" target="_blank"><svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="index_final.html#about">About</a>
+                <a href="index_final.html#publications">Publications</a>
+                <a href="index_final.html#working-papers">Working Papers</a>
+                <a href="index_final.html#work-in-progress">Work in Progress</a>
+                <a href="index_final.html#personal">Personal</a>
+            </nav>
         </div>
-    </nav>
 
-    <!-- Page Content -->
-    <div class="container-fluid p-0">
-        <section class="resume-section">
-            <div class="resume-section-content">
-                <h1 class="mb-0">
-                    Eva
-                    <span class="text-primary">Lestant</span>
-                </h1>
-                <div class="subheading mb-5">
-                    Personal Experiences & Stories
+        <div class="main">
+            <h2 id="bouake">Cote d'Ivoire: Bouake, La Rebelle</h2>
+
+            <h3>History</h3>
+
+            <p class="prose">Bouake is the second-largest city in Cote d'Ivoire, located in the central part of the country, with a population of 740,000 (2021 census). The area was originally inhabited by the Baoule people, an Akan ethnic group that migrated from present-day Ghana in the 18th century. The city's name is believed to come from a <strong>Baoule village that predated colonial influence</strong>.</p>
+
+            <p class="prose">Bouake began to develop significantly during the French colonial period in the early 20th century. Soon the French established a military post in the area, which soon became a <strong>hub for trade and administration</strong>. Its strategic location along the Abidjan-Niger railway, completed in the 1930s, connected Bouake to the southern port of Abidjan and the northern regions of the country, fostering its growth as a commercial and industrial center.</p>
+
+            <p class="prose">As the largest city in central Cote d'Ivoire, Bouake plays a vital role in the national economy. It is a <strong>key center for agricultural trade</strong>, particularly in <strong>cotton, cashew nuts, yams, and maize</strong>. The surrounding region produces much of the country's cotton, and Bouake hosts several <strong>cotton ginning factories</strong> and <strong>textile plants</strong>. Cashew nut processing is also a growing industry, supporting local employment and export revenue.</p>
+
+            <p class="prose">In addition to agriculture, Bouake has a well-developed <strong>livestock market</strong>, with cattle and other livestock brought from northern Cote d'Ivoire, Mali, and Burkina Faso. The city's central market serves as a distribution hub for manufactured goods and food products heading to rural areas. Bouake's location makes it a crossroads for <strong>wholesale trade</strong> between the north and south of the country.</p>
+
+            <p class="prose">Since the early 2000s, Bouake has also seen growth in the <strong>service sector</strong>, including education, banking, healthcare, and transportation. The city is home to universities and technical colleges that support the local labor force and attract students from across the region.</p>
+
+            <p class="prose">In the early 2000s, Bouake was heavily affected by the Ivorian civil conflict. From 2002 to 2011, it served as the de facto capital of the rebel-held north and experienced political instability, economic disruption, and a significant military presence. Despite these challenges, Bouake has remained a resilient city and an important <strong>cultural and economic hub</strong>.</p>
+
+            <h3>The Retailer Project</h3>
+
+            <p class="prose">As I was living in Abidjan for almost two years before starting my PhD, one of my favorite activities was to go grocery shopping in the <strong>informal marketplaces</strong> and see what was the freshest fruit and vegetable in season. Through these repeated interactions, I began to connect with the <strong>retailers</strong> I regularly bought from. We talked about <strong>the prices of goods</strong>, where they were sourced, and the <strong>challenges of making a living by selling small quantities</strong> at the lowest possible prices. Many of these retailers told me that most vegetables were either from or coming through <strong>Bouake</strong>, where, according to them, <strong>"everyone was a trader of something."</strong> Intrigued by this, I decided to visit Bouake and see for myself.</p>
+
+            <p class="prose">Bouake is a city that has seen its share of challenges, especially during the <strong>civil conflict in the early 2000s</strong>. However, it has also been a place of <strong>resilience and economic adaptation</strong>. The local economy is largely <strong>informal</strong>, with countless small retailers selling goods in markets and on the streets. To better understand the city, I met with <strong>Jackson Hien</strong>, a PhD student in sociology at <strong>Universite Alassane Ouattara</strong> in Bouake. He showed me around and introduced me to the retailers from whom he regularly bought his food. We learned how each of the city's <strong>15 marketplaces</strong> had its own unique <strong>identity and reputation</strong>. More surprisingly, we discovered that there was only <strong>one wholesale market</strong> where nearly all the fruits and vegetables produced in the <strong>Vallee du Bandama</strong> region and beyond were gathered before being distributed to the different selling points around the city.</p>
+
+            <p class="prose">Quickly, we both began to wonder why retailers didn't at least <strong>share transportation costs</strong> to go to the wholesale market together. The answer remained vague. Surprisingly, all the retailers agreed that this would be a great idea—but that <strong>no one would step up to organize it</strong> and facilitate the implementation of such a change.</p>
+
+            <p class="prose">From there, it became clear that <strong>something could be done to improve the sourcing side of these small businesses</strong>. We began piloting different ways of <strong>cooperating</strong> out of our sample, based on the retailers' suggestions, and eventually converged on a solution that retailers found practical and effective. The implementation was simple enough to scale across <strong>12 markets</strong> in the surrounding neighborhoods, covering around <strong>750 retailers out of the 1,000</strong> we had previously identified.</p>
+
+            <h3>Urban Landmarks - Personal Favorite</h3>
+
+            <div class="image-grid-2">
+                <div class="image-card">
+                    <img src="assets/img/Bouake_landmark7.jpg" alt="Blue Mosque">
+                    <div class="caption">Blue Mosque</div>
                 </div>
-                
-                <h2 class="mb-4">Cote d'Ivoire: Bouaké, La Rebelle </h2>
-                <div class="mb-4">
-                    <h3 class="mb-0"> History </h3>
+                <div class="image-card">
+                    <img src="assets/img/Bouake_landmark2.jpg" alt="Stade de la Paix">
+                    <div class="caption">Stade de la Paix</div>
                 </div>
-                <p class="lead mb-4">Bouaké is the second-largest city in Côte d'Ivoire, located in the central part of the country, with a population of 740,000 (2021 census). The area was originally inhabited by the Baoulé people, an Akan ethnic group that migrated from present-day Ghana in the 18th century. The city's name is believed to come from a <b>Baoulé village that predated colonial influence</b> .</p>
-
-                <p class="lead mb-4">Bouaké began to develop significantly during the French colonial period in the early 20th century. Soon the French established a military post in the area, which soon became a <b>hub for trade and administration</b>. Its strategic location along the Abidjan-Niger railway, completed in the 1930s, connected Bouaké to the southern port of Abidjan and the northern regions of the country, fostering its growth as a commercial and industrial center.</p>
-
-                <p class="lead mb-4">As the largest city in central Côte d’Ivoire, Bouaké plays a vital role in the national economy. It is a <b>key center for agricultural trade</b>, particularly in <b>cotton, cashew nuts, yams, and maize</b>. The surrounding region produces much of the country's cotton, and Bouaké hosts several <b>cotton ginning factories</b> and <b>textile plants</b>. Cashew nut processing is also a growing industry, supporting local employment and export revenue. </p>
-
-                <p class="lead mb-4">In addition to agriculture, Bouaké has a well-developed <b>livestock market</b>, with cattle and other livestock brought from northern Côte d’Ivoire, Mali, and Burkina Faso. The city’s central market serves as a distribution hub for manufactured goods and food products heading to rural areas. Bouaké's location makes it a crossroads for <b>wholesale trade</b> between the north and south of the country.</p>
-
-                <p class="lead mb-4">Since the early 2000s, Bouaké has also seen growth in the <b>service sector</b>, including education, banking, healthcare, and transportation. The city is home to universities and technical colleges that support the local labor force and attract students from across the region.</p>
-
-                <p class="lead mb-4">In the early 2000s, Bouaké was heavily affected by the Ivorian civil conflict. From 2002 to 2011, it served as the de facto capital of the rebel-held north and experienced political instability, economic disruption, and a significant military presence. Despite these challenges, Bouaké has remained a resilient city and an important <b>cultural and economic hub</b>.</p>
-                
-                
-                <div class="mb-4">
-                    <h3 class="mb-0"> The Retailer Project </h3>
+                <div class="image-card">
+                    <img src="assets/img/Bouake_landmark3.jpg" alt="Industrial Park">
+                    <div class="caption">Industrial Park</div>
                 </div>
-
-                <p class="lead mb-4">As I was living in Abidjan for almost two years before starting my PhD, one of my favorite activities was to go grocery shopping in the <b>informal marketplaces</b> and see what was the freshest fruit and vegetable in season. Through these repeated interactions, I began to connect with the <b>retailers</b> I regularly bought from. We talked about <b>the prices of goods</b>, where they were sourced, and the <b>challenges of making a living by selling small quantities</b> at the lowest possible prices. Many of these retailers told me that most vegetables were either from or coming through <b>Bouaké</b>, where, according to them, <b>"everyone was a trader of something."</b> Intrigued by this, I decided to visit Bouaké and see for myself.</p>
-
-                <p class="lead mb-4">Bouaké is a city that has seen its share of challenges, especially during the <b>civil conflict in the early 2000s</b>. However, it has also been a place of <b>resilience and economic adaptation</b>. The local economy is largely <b>informal</b>, with countless small retailers selling goods in markets and on the streets. To better understand the city, I met with <b>Jackson Hien</b>, a PhD student in sociology at <b>Université Alassane Ouattara</b> in Bouaké. He showed me around and introduced me to the retailers from whom he regularly bought his food. We learned how each of the city's <b>15 marketplaces</b> had its own unique <b>identity and reputation</b>. More surprisingly, we discovered that there was only <b>one wholesale market</b> where nearly all the fruits and vegetables produced in the <b>Vallée du Bandama</b> region and beyond were gathered before being distributed to the different selling points around the city.</p>
-
-                <p class="lead mb-4">Quickly, we both began to wonder why retailers didn’t at least <b>share transportation costs</b> to go to the wholesale market together. The answer remained vague. Surprisingly, all the retailers agreed that this would be a great idea—but that <b>no one would step up to organize it</b> and facilitate the implementation of such a change.</p>
-
-                <p class="lead mb-4">From there, it became clear that <b>something could be done to improve the sourcing side of these small businesses</b>. We began piloting different ways of <b>cooperating</b> out of our sample, based on the retailers' suggestions, and eventually converged on a solution that retailers found practical and effective. The implementation was simple enough to scale across <b>12 markets</b> in the surrounding neighborhoods, covering around <b>750 retailers out of the 1,000</b> we had previously identified.</p>
-
-
-                <div class="mb-4">
-                    <h3 class="mb-0">Urban Landmarks - Personal Favorite</h3>
+                <div class="image-card">
+                    <img src="assets/img/Bouake_landmark4.jpg" alt="Igname at the Wholesale Market">
+                    <div class="caption">Igname at the Wholesale Market</div>
                 </div>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-4">
-                        <a href="assets/img/Bouake_landmark7.jpg" title="Blue Mosque" class="image-link">
-                            <div class="image-container">
-                                <img class="portfolio-img img-fluid" src="assets/img/Bouake_landmark7.jpg" alt="Bouaké Market">
-                                <div class="overlay">
-                                    <h4 class="text-center">Blue Mosque</h4>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <a href="assets/img/Bouake_landmark2.jpg" title="Bouaké Main Market" class="image-link">
-                            <div class="image-container">
-                                <img class="portfolio-img img-fluid" src="assets/img/Bouake_landmark2.jpg" alt="Bouaké Market">
-                                <div class="overlay">
-                                    <h4 class="text-center">Stade de la Paix</h4>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <a href="assets/img/Bouake_landmark3.jpg" title="Industrial Park" class="image-link">
-                            <div class="image-container">
-                                <img class="portfolio-img img-fluid" src="assets/img/Bouake_landmark3.jpg" alt="Bouaké Market">
-                                <div class="overlay">
-                                    <h4 class="text-center">Industrial Park</h4>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <a href="assets/img/Bouake_landmark4.jpg" title="Wholesale Market" class="image-link">
-                            <div class="image-container">
-                                <img class="portfolio-img img-fluid" src="assets/img/Bouake_landmark4.jpg" alt="Bouaké Market">
-                                <div class="overlay">
-                                    <h4 class="text-center">Igname at the Wholesale Market</h4>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <a href="assets/img/Bouake_landmark5.jpg" title="Urban Fishing" class="image-link">
-                            <div class="image-container">
-                                <img class="portfolio-img img-fluid" src="assets/img/Bouake_landmark5.jpg" alt="Bouaké Market">
-                                <div class="overlay">
-                                    <h4 class="text-center">Urban Fishing</h4>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-md-6 mb-4">
-                        <a href="assets/img/Bouake_landmark6.jpg" title="Urban Gardening" class="image-link">
-                            <div class="image-container">
-                                <img class="portfolio-img img-fluid" src="assets/img/Bouake_landmark6.jpg" alt="Bouaké Market">
-                                <div class="overlay">
-                                    <h4 class="text-center">Urban Gardening</h4>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
+                <div class="image-card">
+                    <img src="assets/img/Bouake_landmark5.jpg" alt="Urban Fishing">
+                    <div class="caption">Urban Fishing</div>
                 </div>
-          
-
-                <!-- Testimony Section -->
-                <div class="mb-4">
-                    <h3 class="mb-0"> Testimony </h3>
-                </div>  
-            
-                <p class="mb-8"><i> These testimonies highlights the challenges and experiences of small-scale retailer in the Sokoura. </i>  </p>
-
-                <!-- First Testimony  -->
-               <div class="container my-5">
-                <div class="row align-items-center">
-                    <!-- Left Column: Image -->
-                    <div class="col-md-4 text-center">
-                        <div class="image-container">
-                            <img class="img-fluid" style="max-width: 100%; height: auto; transform: scale(1);" src="assets/img/retailer_sokoura.jpg" alt="Bouaké Market">
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Text -->
-                    <div class="col-md-8">
-                        
-                            <p>I was born in 1968, right here in the market. This has been my world since I was a child. I only made it to 6th grade in school before I started working alongside my mother, selling tomatoes and okra, Maggi cubes, eggplant, and peppers—the same products I sell today.</p>
-                            <p>My mother came from Katiola, and my father was Malian, working on the railway as a mason. My grandfather was chief of the RAM. I'm one of seven children, with two older sisters who both work at the refinery as secretaries.</p>
-                            <p>I have three children of my own—two daughters and a son. My eldest daughter has been a nurse for over 30 years now. My son works hard and takes care of himself. My youngest daughter just got her baccalaureate when she was 18, and she's continuing her studies.</p>
-                            <p>We speak Dioula at home, and this market has been our family's life for generations. It's where I learned everything I know about business, about taking care of people, about making a living with your hands and your heart. - <b> Malle Salimata </b></p>
-                        
-                    </div>
+                <div class="image-card">
+                    <img src="assets/img/Bouake_landmark6.jpg" alt="Urban Gardening">
+                    <div class="caption">Urban Gardening</div>
                 </div>
             </div>
 
+            <h3>Testimony</h3>
 
-                <!-- Second Testimony Image -->
-                <div class="container my-5">
-                <div class="row align-items-center">
-                    <!-- Left Column: Image -->
-                    <div class="col-md-4 text-center">
-                        <div class="image-container">
-                            <img class="img-fluid" style="max-width: 100%; height: auto; transform: scale(1);" src="assets/img/retailerr_sokouraa.jpg" alt="Bouaké Market">
-                        </div>
-                    </div>
+            <p class="page-subtitle">These testimonies highlight the challenges and experiences of small-scale retailers in the Sokoura.</p>
 
-                    <!-- Right Column: Text -->
+            <div class="testimony">
+                <img src="assets/img/retailer_sokoura.jpg" alt="Malle Salimata">
+                <div class="testimony-text">
+                    <p>I was born in 1968, right here in the market. This has been my world since I was a child. I only made it to 6th grade in school before I started working alongside my mother, selling tomatoes and okra, Maggi cubes, eggplant, and peppers—the same products I sell today.</p>
+                    <p>My mother came from Katiola, and my father was Malian, working on the railway as a mason. My grandfather was chief of the RAM. I'm one of seven children, with two older sisters who both work at the refinery as secretaries.</p>
+                    <p>I have three children of my own—two daughters and a son. My eldest daughter has been a nurse for over 30 years now. My son works hard and takes care of himself. My youngest daughter just got her baccalaureate when she was 18, and she's continuing her studies.</p>
+                    <p>We speak Dioula at home, and this market has been our family's life for generations. It's where I learned everything I know about business, about taking care of people, about making a living with your hands and your heart. — <strong>Malle Salimata</strong></p>
+                </div>
+            </div>
 
-                <div class="col-md-8">
-                    <p>I was born in Mali, in the city of Kian, about 60 years ago. I've been <span class="highlight">selling at the Sokoura market for 40 years now</span>. This market has become my world, the place where I learned to do business, to take care of people, to make a living with my hands and my heart.</p>
-        
+            <div class="testimony">
+                <img src="assets/img/retailerr_sokouraa.jpg" alt="Diarra Massetou">
+                <div class="testimony-text">
+                    <p>I was born in Mali, in the city of Kian, about 60 years ago. I've been selling at the Sokoura market for 40 years now. This market has become my world, the place where I learned to do business, to take care of people, to make a living with my hands and my heart.</p>
                     <p>I was married for over 45 years to a tailor. Together we had 12 children—3 boys and 9 girls. Today, I have 9 children still alive; three have passed away. My first child is now 35 years old, and my youngest is only 14 and still in primary school. My parents were farmers, and it's from them that I inherited this strength to work hard.</p>
-                    
                     <p>I've been a widow for 10 years now. My husband passed away, and it was only this year that I returned to Mali for his funeral ceremonies. At the market, I'm helped by my fifth child, a daughter who has 5 children of her own but lost her husband. All my daughters are married, and among my children, only three went to school, but only one continues his studies.</p>
-                    
-                    <p>None of my children work formally, but we support each other. This Sokoura market has witnessed my life, my joys and my sorrows. It's here that I learned that commerce is more than selling—it's about creating connections, being part of a community, surviving and thriving together. - <b> Diarra Massetou </b></p>
+                    <p>None of my children work formally, but we support each other. This Sokoura market has witnessed my life, my joys and my sorrows. It's here that I learned that commerce is more than selling—it's about creating connections, being part of a community, surviving and thriving together. — <strong>Diarra Massetou</strong></p>
                 </div>
-
-                <!-- Photo Section -->
-                <div class="text-center mb-4 mt-5">
-                    <h3 class="mb-0"> Colors of Marketplaces </h3>
-                </div>
-
-
-                <!-- Photo Grid -->
-                <div class="row g-0">
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market1.jpg" alt="Quiet Streets" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market2.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market3.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market4.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market5.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market6.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market7.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market10.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="image-container">
-                            <img class="img-fluid" src="assets/img/market11.jpg" alt="Stadium View" >
-                            <div class="overlay"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Last section -->
-                <div class="mb-2">
-                    <h3 class="mb-0"> Book and Press Coverage </h3>
-                </div>
-
-                <div class="d-flex gap-3 mt-4 mb-5">
-                    <a class="btn btn-secondary" href="https://www.jeuneafrique.com/mag/553228/politique/cote-divoire-bouake-la-rebelle/" target="_blank">
-                        Jeune Afrique
-                    </a>
-                    <a class="btn btn-secondary" href="https://www.fayard.fr/livre/bouake-le-dernier-cold-case-de-la-francafrique-9782213726946/" target="_blank">
-                        Bouaké, le dernier Cold Case de la Françafrique
-                    </a>
-                </div>
-
-                <p><a href="index.html#Personal" class="hlinknames">← Back to main page</a></p>
-
-                <div class="text-center mb-2" style="margin-top: 0; margin-bottom: 0.5rem;">
-                    <img class="img-fluid" src="assets/img/market12.jpg" alt="Bouaké Market" style="max-width: 40%; height: auto; margin: 0; transform: scale(1);">
-                </div>
-            
             </div>
-        </section>
+
+            <h3>Colors of Marketplaces</h3>
+
+            <div class="image-grid-3">
+                <div class="image-card">
+                    <img src="assets/img/market1.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market2.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market3.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market4.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market5.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market6.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market7.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market10.jpg" alt="Marketplace">
+                </div>
+                <div class="image-card">
+                    <img src="assets/img/market11.jpg" alt="Marketplace">
+                </div>
+            </div>
+
+            <h3>Book and Press Coverage</h3>
+
+            <div>
+                <a href="https://www.jeuneafrique.com/mag/553228/politique/cote-divoire-bouake-la-rebelle/" class="link-btn" target="_blank">Jeune Afrique</a>
+                <a href="https://www.fayard.fr/livre/bouake-le-dernier-cold-case-de-la-francafrique-9782213726946/" class="link-btn" target="_blank">Bouake, le dernier Cold Case de la Francafrique</a>
+            </div>
+
+            <a href="index_final.html#personal" class="back-link">&larr; Back to main page</a>
+
+            <img src="assets/img/market12.jpg" alt="Bouake Market" class="closing-image">
+        </div>
     </div>
 
-    <!-- Bootstrap core JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
+    <script>
+        function toggleTheme() {
+            const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+            document.querySelector('.moon').style.display = t === 'dark' ? 'none' : 'block';
+            document.querySelector('.sun').style.display = t === 'dark' ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>
-<!-- End of personal_experiences.html -->

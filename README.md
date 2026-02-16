@@ -1,8 +1,4 @@
 # elestant.github.io
-Personal Website Jul 8
+Personal Website 
 
-This is a new website and a new adventure !!!
-
-Everything is preliminary and subject to change in the comming weeks
-
-Information displayed so far are from a template i downloaded
+Got inspired by Ignacio Banares-Sanchez website and decided to create my own personal website using Jekyll. I will be posting about my projects, research, and other interests here. Stay tuned!

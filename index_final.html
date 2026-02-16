@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eva Lestant</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon_el.ico" />
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --text-secondary: #111111;
+            --accent-blue: #2779a7;
+            --accent-red: #169612;
+            --accent-red-light: #f5e8e8;
+            --border: #e5e5e5;
+            --card-bg: #fff;
+            --abstract-bg: #f5f8fa;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0a0a;
+            --text: #fafafa;
+            --text-secondary: #a3a3a3;
+            --accent-blue: #5cb8e0;
+            --accent-red: #1e9f19;
+            --accent-red-light: #2a1f1f;
+            --border: #262626;
+            --card-bg: #171717;
+            --abstract-bg: #151a1d;
+        }
+
+        body {
+            font-family: -apple-system, system-ui, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--card-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { border-color: var(--accent-blue); }
+        .theme-toggle svg { width: 18px; height: 18px; stroke: var(--text); fill: none; stroke-width: 1.5; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 60px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 80px;
+        }
+
+        .sidebar { position: sticky; top: 50px; text-align: center; align-self: start; }
+
+        .name { font-family: -apple-system, system-ui, 'Helvetica Neue', Arial, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; color: var(--accent-blue); white-space: nowrap; }
+
+        .profile-img {
+            width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            filter: grayscale(15%);
+            transition: filter 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-img:hover { filter: grayscale(0%); }
+
+        .title, .affiliation { color: var(--text-secondary); font-size: 15px; margin-bottom: 4px; font-weight: 400; }
+        .affiliation { margin-bottom: 18px; }
+
+        .cv-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .cv-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--text);
+            z-index: -1;
+            transition: left 0.3s ease;
+        }
+
+        .cv-btn:hover {
+            color: var(--bg);
+        }
+
+        .cv-btn:hover::before {
+            left: 0;
+        }
+
+        .contact a {
+            display: inline-block;
+            color: var(--accent-red);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .contact a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .contact a:hover::after { width: 100%; }
+
+        .address { color: var(--text-secondary); font-size: 13px; line-height: 1.6; margin-top: 10px; }
+
+        .social { display: flex; gap: 14px; margin-top: 16px; justify-content: center; }
+        .social a { color: var(--text-secondary); transition: color 0.2s; display: flex; align-items: center; }
+        .social a:hover { color: var(--accent-blue); }
+        .social svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.2s;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .sidebar-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-nav a:hover {
+            color: var(--accent-blue);
+        }
+
+        .sidebar-nav a:hover::after {
+            width: 100%;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .main-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--accent-blue);
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        .main h2 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-blue);
+            margin-bottom: 24px;
+            margin-top: 45px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            scroll-margin-top: 30px;
+        }
+
+        .main h2:first-of-type { margin-top: 0; }
+
+        .intro { font-size: 14px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 16px; font-weight: 400; }
+        .intro strong { color: var(--text); font-weight: 400; }
+        .intro a { color: var(--accent-red); text-decoration: none; position: relative; }
+        .intro a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .intro a:hover::after { width: 100%; }
+
+        .paper { margin-bottom: 20px; }
+        .paper:last-child { margin-bottom: 0; }
+
+        .paper-title { font-size: 16px; font-weight: 400; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; color: var(--accent-red); }
+
+        .coauthors { color: var(--text-secondary); font-size: 14px; margin-bottom: 6px; font-style: italic; font-weight: 400; }
+        .coauthors a { color: var(--text-secondary); text-decoration: none; position: relative; }
+        .coauthors a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .coauthors a:hover { color: var(--accent-red); }
+        .coauthors a:hover::after { width: 100%; }
+
+        .paper-info { color: var(--text-secondary); font-size: 14px; margin-bottom: 10px; }
+
+        .paper-links { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; }
+        .paper-links a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.2s; position: relative; }
+        .paper-links a::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .paper-links a:hover { color: var(--accent-red); }
+        .paper-links a:hover::after { width: 100%; }
+
+        .expandable {
+            display: none;
+            margin-top: 14px;
+            padding: 18px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            border-left: 2px solid var(--accent-blue);
+            font-weight: 400;
+            background: var(--abstract-bg);
+        }
+
+        .expandable.show { display: block; animation: fadeIn 0.3s ease; }
+        .expandable strong { color: var(--text); font-weight: 500; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .wip-item { margin-bottom: 20px; }
+        .wip-item:last-child { margin-bottom: 0; }
+        .wip-title { font-size: 16px; font-weight: 400; margin-bottom: 6px; color: var(--accent-red); }
+        .wip-coauthors { color: var(--text-secondary); font-size: 14px; font-style: italic; margin-bottom: 4px; }
+        .wip-status { color: var(--accent-blue); font-size: 13px; font-weight: 500; }
+
+        .personal-text { font-size: 14px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 16px; font-weight: 400; }
+        .personal-text a { color: var(--accent-red); text-decoration: none; position: relative; }
+        .personal-text a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent-red); transition: width 0.3s ease; }
+        .personal-text a:hover::after { width: 100%; }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; padding: 40px 24px; gap: 50px; }
+            .sidebar { position: static; }
+            .profile-img { margin: 0 auto 24px; width: 200px; height: 200px; }
+            .social { justify-content: center; }
+            .theme-toggle { top: 16px; right: 16px; }
+            .main-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <svg viewBox="0 0 24 24" class="moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg viewBox="0 0 24 24" class="sun" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="name">Eva Lestant</div>
+            <img src="assets/img/Stanford_bio.jpg" alt="Eva Lestant" class="profile-img">
+            <div class="title">PhD Student in Economics</div>
+            <div class="affiliation">Stanford University</div>
+            <a href="assets/pdf/CV_research.pdf" class="cv-btn" target="_blank">DOWNLOAD CV</a>
+            <div class="contact">
+                <a href="mailto:elestant@stanford.edu">elestant@stanford.edu</a>
+            </div>
+            <div class="address">579 Jane Stanford Way<br>Stanford, CA 94305<br>(650) 709-6756</div>
+            <div class="social">
+                <a href="https://github.com/elestant/elestant.github.io" title="GitHub" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+                <a href="https://scholar.google.com/citations?hl=en&authuser=1&user=Hr4T94UAAAAJ" title="Google Scholar" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/></svg></a>
+                <a href="https://www.linkedin.com/in/eva-l-40b4018a" title="LinkedIn" target="_blank"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#about">About</a>
+                <a href="#working-papers">Working Papers</a>
+                <a href="#work-in-progress">Work in Progress</a>
+                <a href="#publications">Publications</a>
+                <a href="#other-publications">Other Publications</a>
+            </nav>
+        </div>
+
+        <div class="main">
+            <nav class="main-nav">
+                <a href="#about">About</a>
+                <a href="#working-papers">Working Papers</a>
+                <a href="#work-in-progress">Work in Progress</a>
+                <a href="#publications">Publications</a>
+                <a href="#other-publications">Other Publications</a>
+            </nav>
+
+            <h2 id="about">About</h2>
+            <p class="intro">
+                I am a fifth-year student in the Department of Economics at Stanford University. 
+                I am an applied economist, working on economical challenges faced by cities in low- and middle-income countries.
+                I use tools from applied microeconomics, machine learning, and empirical industrial organisation, combining structural models with primary data collection and field experiments.
+            </p>
+            <p class="intro">
+                I am currently working on projects in <a href="personal_experiences.html"> Côte d'Ivoire, </a>  Burkina Faso, Ethiopia and Mexico.
+            </p>
+
+            <h2 id="working-papers">Working Papers</h2>
+
+            <div class="paper">
+                <div class="paper-title">Estimating Variances for Causal Panel Data Estimators</div>
+                <div class="coauthors">with Alexander Almeida, <a href="https://people.stanford.edu/athey" target="_blank">Susan Athey</a>, <a href="https://people.stanford.edu/imbens" target="_blank">Guido Imbens</a> and <a href="https://www.alexiaolaizola.com" target="_blank">Alexia Olaizola</a></div>
+                <div class="paper-links">
+                    <a href="#" onclick="toggle('abs3'); return false;">&#9656; Abstract</a>
+                    <a href="https://arxiv.org/abs/2510.11841" target="_blank">[paper]</a>
+                </div>
+                <div class="expandable" id="abs3">This paper studies variance estimators in panel data settings. There has been a recent surge in research on panel data models with a number of new estimators proposed. However, there has been less attention paid to the quantification of the precision of these estimators. Of the variance estimators that have been proposed, their relative merits are not well understood. In this paper we develop a common framework for comparing some of the proposed variance estimators for generic point estimators. We reinterpret three commonly used approaches as targeting different conditional variances under an exchangeability assumption. We find that the estimators we consider are all valid on average, but that their performance in terms of power differs substantially depending on the heteroskedasticity structure of the data. Building on these insights, we propose a new variance estimator that flexibly accounts for heteroskedasticity in both the unit and time dimensions, and delivers superior statistical power in realistic panel data settings.</div>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">From Training to Earning. The 7-Year Impact of Dual Apprenticeships on Youth Employment</div>
+                <div class="coauthors">with  <a href="https://sites.google.com/site/brunocrepon/" target="_blank">Bruno Crépon</a> and <a href="https://sites.google.com/view/patrickpremand/about-me" target="_blank"> Patrick Premand</a> </div>
+                <div class="paper-links">
+                    <a href="#" onclick="toggle('abs4'); return false;">&#9656; Abstract</a>
+                    <a href="https://documents1.worldbank.org/curated/en/099148202112615306/pdf/IDU-58648a49-2ff9-4e49-8ce8-49171bb998b3.pdf" target="_blank">[paper]</a>
+                </div>
+                <div class="expandable" id="abs4">This paper studies the long-term impacts of dual apprenticeships on youth employment in a high-informality labor market. A Randomized Controlled Trial in Côte d'Ivoire with four follow-up surveys collected over seven years shows that dual apprenticeships have sustained impacts: youth earnings increase by 14 to 20 percent two to five years after program completion. Gains are observed across the earnings distribution, and the share of youth in working poverty—with earnings below the minimum wage—decreases by 11 percent. Importantly, results highlight a distinct pathway whereby training raises earnings through self-employment, with no impact on access to wage employment. Youth perform more complex, non-routine tasks, consistent with improved technical skills and productivity. In a setting where formal wage jobs are rare, these findings show that dual apprenticeships constitute an effective and inclusive skilling model that raises earnings in self-employment and reduces working poverty.</div>
+            </div>
+
+            <h2 id="work-in-progress">Work in Progress</h2>
+
+            <div class="wip-item">
+                <div class="wip-title">Demand and Supply Determinants of a Formal Apprenticeship Program: Scale-up Analysis</div>
+                <div class="coauthors">with  <a href="https://sites.google.com/site/brunocrepon/" target="_blank">Bruno Crépon</a> and <a href="https://sites.google.com/view/patrickpremand/about-me" target="_blank">Patrick Premand</a> </div>
+                <div class="wip-status">Preliminary Results</div>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Selling (Together): Fostering Economies of Scale through Retail Cooperatives</div>
+                <div class="coauthors">with  <a href="https://sites.google.com/site/luizc/" target="_blank">Luiz Carpizo</a> </div>
+                <div class="wip-status">Data Collection completed</div>
+                <div class="paper-links">
+                    <a href="#" onclick="toggle('abs5'); return false;">&#9656; Abstract</a>
+                </div>
+                <div class="expandable" id="abs5">Despite their ubiquity in urban developing economies, horizontal relationships among similar informal retailers—and their implications for market efficiency—remain understudied. This paper examines why retailers do not coordinate and how collaboration costs affect coordination. We run a randomized experiment with informal food retailers in Bouaké (Cote d'Ivoire) that lowers barriers to joint sourcing through information, prompted meetings, and monitoring. Prompted meetings alone generate substantial and persistent cooperation (+26% of participation), indicating that initiation and relational frictions are central. Cooperation reduces procurement costs and leads to lower consumer prices by 6% with incomplete pass-through, with the largest price declines for core goods facing the strongest within-market competition. Retailers also expand product variety. Prices fall and variety rises, consistent with stronger competition rather than output-side collusion, implying gains in consumer welfare.</div>
+            </div>
+
+            <div class="wip-item">
+                <div class="wip-title">Consumer Search in a Centralized Market: Informational Friction and Market Segmentation</div>
+                <div class="wip-status">Pilot Completed and Funding Secured</div>
+            </div>
+
+            <h2 id="publications">Publications</h2>
+
+            <div class="paper">
+                <div class="paper-title">Panel Data Evidence on the Effects of the COVID-19 Pandemic on Livelihoods in Urban Côte d'Ivoire</div>
+                <div class="coauthors">with <a href="https://sites.google.com/view/pascaline-dupas/home" target="_blank">Pascaline Dupas</a> and <a href="https://web.stanford.edu/~fafchamp/" target="_blank">Marcel Fafchamps</a></div>
+                <div class="paper-info"><em>PLOSOne</em>, 2023</div>
+                <div class="paper-links">
+                    <a href="#" onclick="toggle('abs1'); return false;">&#9656; Abstract</a>
+                    <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0277559" target="_blank">[paper]</a>
+                    <a href="https://www.openicpsr.org/openicpsr/project/183614/version/V1/view" target="_blank">[data]</a>
+                </div>
+                <div class="expandable" id="abs1">In early March 2020, a few cases of COVID-19 were diagnosed in Abidjan, the capital city of Côte d'Ivoire. To combat the spread of the disease, major restrictions to mobility and gatherings were introduced between mid-March and late May 2020. We collected panel survey data on over 2,500 individuals from the Greater Abidjan area over the period immediately before and after the start of the pandemic. We document striking drops in employment, hours worked, income, and food consumption in the first months after the onset of COVID-19, when lockdown was in place. We also find that, in response, survey respondents received more private transfers from other parts of the country, at a time when remittances from abroad fell — and that some respondents moved either temporarily or permanently. In terms of recovery, we find that subjective well-being was lower on average in December 2020 than at baseline. Yet, despite schools being closed between mid-March and July 2020, school enrollment suffered little: by December 2020, enrollment rates had returned to baseline. Our results indicate that government policies aimed at alleviating the worst effects of lockdown only reached a few people, and not necessarily those most in need.</div>
+            </div>
+
+            <h2 id="other-publications">Other Work</h2>
+
+            <div class="paper">
+                <div class="paper-title">Report on the AUDRI 2019-2020 Côte d'Ivoire</div>
+                <div class="coauthors">with <a href="https://sites.google.com/view/pascaline-dupas/home" target="_blank">Pascaline Dupas</a> and <a href="https://web.stanford.edu/~fafchamp/" target="_blank">Marcel Fafchamps</a></div>
+                <div class="paper-info">Last Update: May 2021</div>
+                <div class="paper-links">
+                    <a href="#" onclick="toggle('abs2'); return false;">&#9656; Abstract</a>
+                    <a href="https://drive.google.com/file/d/11eZ-26N12Fd4AX452jbICNJgnhZPVhn9/view" target="_blank">[paper]</a>
+                </div>
+                <div class="expandable" id="abs2">This report provides summary statistics on the 2019 household listing and the 2019-2020 individual survey conducted under the auspices of AUDRI in the Greater Abidjan region of Côte d'Ivoire. The household listing and the individual surveys were undertaken in collaboration with IPA-Côte d'Ivoire and with funding from the Stanford King Center on Global Development.</div>
+            </div>
+
+            <div class="paper">
+                <div class="paper-title">Households' Attitudes towards School Reopening during COVID-19 in Ethiopia</div>
+                <div class="coauthors">with <a href="https://dagness.github.io" target="_blank">Daniel Agness</a>, <a href="https://sites.google.com/view/pascaline-dupas/home" target="_blank">Pascaline Dupas</a>, <a href="https://web.stanford.edu/~fafchamp/" target="_blank">Marcel Fafchamps</a> and Tigabu Getahun</div>
+                <div class="paper-info">March 2021</div>
+                <div class="paper-links">
+                    <a href="https://www.theigc.org/wp-content/uploads/2021/04/Agness-et-al-2021-Final-Report.pdf" target="_blank">[paper]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+            document.querySelector('.moon').style.display = t === 'dark' ? 'none' : 'block';
+            document.querySelector('.sun').style.display = t === 'dark' ? 'block' : 'none';
+        }
+        function toggle(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('show');
+            const link = document.querySelector(`[onclick="toggle('${id}'); return false;"]`);
+            if (link) {
+                const text = link.textContent;
+                link.textContent = text.startsWith('\u25B8') ? text.replace('\u25B8', '\u25BE') : text.replace('\u25BE', '\u25B8');
+            }
+        }
+    </script>
+</body>
+</html>
